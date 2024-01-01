@@ -11,6 +11,7 @@ async function bootstrap() {
   app.connectMicroservice({
     transport: Transport.TCP,
   });
+
   app.use(cookieParser());
   app.useGlobalPipes(
     new ValidationPipe({

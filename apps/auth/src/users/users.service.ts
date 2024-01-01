@@ -19,7 +19,7 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    this.validateCreateUserDto(createUserDto);
+    await this.validateCreateUserDto(createUserDto);
 
     return this.usersRepository.create({
       ...createUserDto,

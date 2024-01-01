@@ -8,9 +8,9 @@ services:
     env_file:
       - ./apps/reservations/.env
     ports:
-      - '3000:3000'
+      - '3002:3002'
     volumes:
-      # - .:/usr/src/app
+      - .:/usr/src/app
 
   auth:
     build:
@@ -23,7 +23,7 @@ services:
     ports:
       - '3001:3001'
     volumes:
-      # - .:/usr/src/app
+      - .:/usr/src/app
 
   mongo:
     image: mongo
