@@ -1,0 +1,72 @@
+steps:
+  #Auth service
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'europe-west10-docker.pkg.dev/graphic-chain-409920/auth/production',
+        '-f',
+        'apps/auth/Dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'europe-west10-docker.pkg.dev/graphic-chain-409920/auth/production',
+      ]
+
+  #Notifications service
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'europe-west10-docker.pkg.dev/graphic-chain-409920/notifications/production',
+        '-f',
+        'apps/notifications/Dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'europe-west10-docker.pkg.dev/graphic-chain-409920/notifications/production',
+      ]
+
+  #Payments service
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'europe-west10-docker.pkg.dev/graphic-chain-409920/payments/production',
+        '-f',
+        'apps/payments/Dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'europe-west10-docker.pkg.dev/graphic-chain-409920/payments/production',
+      ]
+
+  #Reservations service
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'europe-west10-docker.pkg.dev/graphic-chain-409920/reservations/production',
+        '-f',
+        'apps/reservations/Dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'europe-west10-docker.pkg.dev/graphic-chain-409920/reservations/production',
+      ]
