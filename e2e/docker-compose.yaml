@@ -1,0 +1,43 @@
+services:
+  e2e:
+    build:
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./specs:/usr/src/app/specs
+    depends_on:
+      - reservations
+      - auth
+      - payments
+      - notifications
+      - mongo
+
+  auth:
+    image: europe-west10-docker.pkg.dev/graphic-chain-409920/auth/production
+    env_file:
+      - ../apps/auth/.env
+    ports:
+      - '3001:3001'
+
+  reservations:
+    image: europe-west10-docker.pkg.dev/graphic-chain-409920/reservations/production
+    env_file:
+      - ../apps/reservations/.env
+    ports:
+      - '3002:3002'
+
+  payments:
+    image: europe-west10-docker.pkg.dev/graphic-chain-409920/payments/production
+    env_file:
+      - ../apps/payments/.env
+    ports:
+      - '3003:3003'
+
+  notifications:
+    image: europe-west10-docker.pkg.dev/graphic-chain-409920/notifications/production
+    env_file:
+      - ../apps/notifications/.env
+    ports:
+      - '3004:3004'
+
+  mongo:
+    image: mongo
