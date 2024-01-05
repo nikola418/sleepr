@@ -18,7 +18,10 @@ export class PaymentsService {
     private readonly notificationsClientProxy: ClientProxy,
   ) {}
 
-  async createCharge({ amount, email }: PaymentsCreateChargeDto) {
+  async createCharge({
+    amount,
+    email,
+  }: PaymentsCreateChargeDto): Promise<Stripe.PaymentIntent> {
     const paymentIntent = await this.stripe.paymentIntents.create({
       payment_method: 'pm_card_visa',
       amount: amount * 100,

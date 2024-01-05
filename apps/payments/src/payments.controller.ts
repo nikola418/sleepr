@@ -1,7 +1,13 @@
 import { Controller, UsePipes, ValidationPipe } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  Ctx,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
 import { PaymentsCreateChargeDto } from './dto';
+import Stripe from 'stripe';
 
 @Controller()
 export class PaymentsController {
@@ -9,7 +15,15 @@ export class PaymentsController {
 
   @MessagePattern('create_charge')
   @UsePipes(new ValidationPipe())
-  createCharge(@Payload() data: PaymentsCreateChargeDto) {
-    return this.paymentsService.createCharge(data);
+  async createCharge(
+    @Payload() data: PaymentsCreateChargeDto,
+    @Ctx() context: RmqContext,
+  ): Promise<Stripe.PaymentIntent> {
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+
+    return this.paymentsService
+      .createCharge(data)
+      .then(() => channel.ack(originalMsg));
   }
 }

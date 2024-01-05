@@ -5,6 +5,9 @@ services:
       dockerfile: ./apps/auth/Dockerfile
       target: development
     command: pnpm run start:dev auth
+    depends_on:
+      - mongo
+      - rabbitmq
     env_file:
       - ./apps/auth/.env
     ports:
@@ -18,6 +21,9 @@ services:
       dockerfile: ./apps/reservations/Dockerfile
       target: development
     command: pnpm run start:dev reservations
+    depends_on:
+      - mongo
+      - rabbitmq
     env_file:
       - ./apps/reservations/.env
     ports:
@@ -31,6 +37,9 @@ services:
       dockerfile: ./apps/payments/Dockerfile
       target: development
     command: pnpm run start:dev payments
+    depends_on:
+      - mongo
+      - rabbitmq
     env_file:
       - ./apps/payments/.env
     volumes:
@@ -42,6 +51,9 @@ services:
       dockerfile: ./apps/notifications/Dockerfile
       target: development
     command: pnpm run start:dev notifications
+    depends_on:
+      - mongo
+      - rabbitmq
     env_file:
       - ./apps/notifications/.env
     volumes:
@@ -49,3 +61,8 @@ services:
 
   mongo:
     image: mongo
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
