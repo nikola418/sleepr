@@ -3,6 +3,7 @@ import { compareSync, hashSync } from 'bcryptjs';
 import { CreateUserDto, GetUserDto } from './dto';
 import { UsersRepository } from './users.repository';
 import { UnprocessableEntityException } from '@nestjs/common';
+import { Role, User } from '@app/common';
 
 @Injectable()
 export class UsersService {
@@ -19,15 +20,17 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    await this.validateCreateUserDto(createUserDto);
-
-    return this.usersRepository.create({
+    await this.validateCreateUser(createUserDto);
+    const user = new User({
       ...createUserDto,
+      roles: createUserDto.roles?.map((roleDto) => new Role(roleDto)),
       password: hashSync(createUserDto.password, 10),
     });
+
+    return this.usersRepository.create(user);
   }
 
-  private async validateCreateUserDto(createUserDto: CreateUserDto) {
+  private async validateCreateUser(createUserDto: CreateUserDto) {
     try {
       await this.usersRepository.findOne({ email: createUserDto.email });
     } catch (err) {
@@ -38,6 +41,6 @@ export class UsersService {
   }
 
   getUser(getUserDto: GetUserDto) {
-    return this.usersRepository.findOne(getUserDto);
+    return this.usersRepository.findOne(getUserDto, { roles: true });
   }
 }

@@ -1,7 +1,8 @@
-import { UserDocument } from '@app/common/models';
+import { User } from '@app/common/models';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { TokenPayload } from './interfaces';
 
 @Injectable()
 export class AuthService {
@@ -10,9 +11,9 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  login(user: UserDocument) {
-    const payload = {
-      userId: user._id.toHexString(),
+  login(user: User) {
+    const payload: TokenPayload = {
+      userId: user.id,
     };
 
     const expires = new Date();

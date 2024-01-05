@@ -5,7 +5,7 @@ import { CurrentUser } from '@app/common';
 import { LocalAuthGuard } from './guards';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { UserDocument } from '@app/common/models';
+import { User } from '@app/common/models';
 
 @Controller('auth')
 export class AuthController {
@@ -13,10 +13,7 @@ export class AuthController {
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
-  login(
-    @CurrentUser() user: UserDocument,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  login(@CurrentUser() user: User, @Res({ passthrough: true }) res: Response) {
     const { token, expires } = this.authService.login(user);
     res.cookie('Authentication', token, { httpOnly: true, expires });
 
